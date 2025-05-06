@@ -16,6 +16,7 @@ ComputerClub Parser::parser(string &filename) {
         int counter_line = 1;
 
        while (getline(input_file, line)) {
+
             Parser::valid_line(line, counter_line);
             if (counter_line == 1) {
                 table_count = stoi(line);

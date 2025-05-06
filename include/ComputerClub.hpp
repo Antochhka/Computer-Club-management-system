@@ -12,6 +12,7 @@
 #define CAME_TO_THE_CLAB 1 // Пришел в клуб
 #define SIT_AT_TABLE 2 // Сел за стол
 #define WAIT_IN_QUEUE 3 // Ждет в очереди
+#define LEAVE 4
 
 class ComputerClub {
     private:
@@ -39,5 +40,11 @@ class ComputerClub {
         void process_sit_at_table(Event &event);
 
         void process_wait_in_queue(Event &event);
+
+        void process_leave(Event &event);
+
+        void leave_last_client();
+
+        void revenue_calculation();
 
 };

@@ -31,4 +31,8 @@ class Table {
 
         int get_revenue();
 
+        Time get_start_time();
+        
+        Time get_end_time();
+
 };

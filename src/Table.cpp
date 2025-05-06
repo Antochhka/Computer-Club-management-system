@@ -43,7 +43,7 @@ void Table::set_occupied_time() {
 void Table::set_revenue(int hour_cost) {
     Time temp = end_time - start_time;
     int hours = temp.get_hours();
-    this->revenue += (temp.get_minutes() > 1) ? hour_cost * (hours + 1) : 0;
+    this->revenue += (temp.get_minutes() >= 1) ? hour_cost * (hours + 1) : 0;
 }
 
 Time Table::get_occupied_time() {
@@ -54,4 +54,11 @@ int Table::get_revenue() {
     return this->revenue;
 }
 
+Time Table::get_start_time() {
+    return this->start_time;
+}
+
+Time Table::get_end_time() {
+    return this->end_time;
+}
 
