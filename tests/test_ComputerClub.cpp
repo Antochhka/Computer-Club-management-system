@@ -17,9 +17,9 @@ protected:
         out.close();
     }
 
-    // void TearDown() override {
-    //     std::remove(tempFile.c_str());
-    // }
+    void TearDown() override {
+        std::remove(tempFile.c_str());
+    }
 };
 
 // Удаляет пробелы/табуляции/переводы строк справа

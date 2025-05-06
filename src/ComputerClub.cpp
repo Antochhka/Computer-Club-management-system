@@ -9,7 +9,6 @@ ComputerClub::ComputerClub(int table_count, int hour_cost, const Time &open_time
 
 ComputerClub::ComputerClub() {};
 
-
 void ComputerClub::process_event() {
     cout << this->open_time.get_time() << endl;
     for (auto &event: input_event) {
@@ -28,8 +27,6 @@ void ComputerClub::process_event() {
 
     leave_last_client();
     revenue_calculation();
-
-
 }
 
 void ComputerClub::revenue_calculation() {

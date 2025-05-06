@@ -1,22 +1,7 @@
-# Определение операционной системы
-ifeq ($(OS),Windows_NT)
-    SYSTEM := Windows
-    TARGET_EXT := .exe
-    RM := del /Q
-    MKDIR := mkdir
-    SEP := \\
-else
-    SYSTEM := Unix
-    TARGET_EXT :=
-    RM := rm -rf
-    MKDIR := mkdir -p
-    SEP := /
-endif
-
 # Компилятор и флаги
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude -pedantic
-TESTFLAGS := -lgtest -lgtest_main -lpthread  # Флаги для Google Test
+TESTFLAGS := -lgtest -lgtest_main -pthread  # Флаги для тестов
 
 # Директории
 SRC_DIR := src
@@ -30,10 +15,10 @@ OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 # Тесты
 TEST_SRCS := $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJS := $(patsubst $(TEST_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(TEST_SRCS))
-TEST_EXES := $(patsubst $(TEST_DIR)/%.cpp,$(OBJ_DIR)/%$(TARGET_EXT),$(TEST_SRCS))
+TEST_EXES := $(patsubst $(TEST_DIR)/%.cpp,$(OBJ_DIR)/%,$(TEST_SRCS))
 
 # Целевой исполняемый файл
-TARGET := task$(TARGET_EXT)
+TARGET := task
 
 # Основные цели
 all: $(TARGET)
@@ -48,34 +33,25 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Сборка тестов
-$(OBJ_DIR)/%$(TARGET_EXT): $(OBJ_DIR)/%.o $(filter-out $(OBJ_DIR)/main.o,$(OBJS))
+# Сборка тестов (с добавлением TESTFLAGS)
+$(OBJ_DIR)/%: $(OBJ_DIR)/%.o $(filter-out $(OBJ_DIR)/main.o,$(OBJS))
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(TESTFLAGS)
 
 # Создание директорий
 $(OBJ_DIR):
-	$(MKDIR) $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
 # Запуск тестов
 test: $(TEST_EXES)
-ifeq ($(SYSTEM),Windows)
 	@for test in $(TEST_EXES); do \
-		$$test; \
-	done
-else
-	@for test in $(TEST_EXES); do \
+		echo "Running $$test..."; \
 		./$$test; \
 	done
-endif
 
 # Очистка
 clean:
-ifeq ($(SYSTEM),Windows)
-	$(RM) $(TARGET)
-	$(RM) $(subst /,$(SEP),$(OBJ_DIR))
-else
-	$(RM) $(TARGET) $(OBJ_DIR)
-endif
+	rm -f $(TARGET)
+	rm -rf $(OBJ_DIR)
 
 rebuild: clean all
 

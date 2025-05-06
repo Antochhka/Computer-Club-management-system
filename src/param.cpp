@@ -14,11 +14,6 @@ void check_param(int argc, char*argv[]) {
     }  
 }
 
-/**
- * @brief Проверяет существование файла.
- * @param filename Имя файла для проверки.
- * @return true - если файл существует, false - если нет.
- */
 bool file_exist(string filename) {
 
     bool res = true;
