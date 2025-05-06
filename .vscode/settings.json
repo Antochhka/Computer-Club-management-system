@@ -4,6 +4,7 @@
         "iosfwd": "cpp",
         "compare": "cpp",
         "type_traits": "cpp",
-        "cstddef": "cpp"
+        "cstddef": "cpp",
+        "stdexcept": "cpp"
     }
 }

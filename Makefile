@@ -1,13 +1,11 @@
 # Определение операционной системы
 ifeq ($(OS),Windows_NT)
-    # Windows
     SYSTEM := Windows
     TARGET_EXT := .exe
     RM := del /Q
     MKDIR := mkdir
     SEP := \\
 else
-    # Unix-like (Linux, macOS)
     SYSTEM := Unix
     TARGET_EXT :=
     RM := rm -rf
@@ -18,6 +16,7 @@ endif
 # Компилятор и флаги
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude -pedantic
+TESTFLAGS := -lgtest -lgtest_main -lpthread  # Флаги для Google Test
 
 # Директории
 SRC_DIR := src
@@ -51,7 +50,7 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp | $(OBJ_DIR)
 
 # Сборка тестов
 $(OBJ_DIR)/%$(TARGET_EXT): $(OBJ_DIR)/%.o $(filter-out $(OBJ_DIR)/main.o,$(OBJS))
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(TESTFLAGS)
 
 # Создание директорий
 $(OBJ_DIR):

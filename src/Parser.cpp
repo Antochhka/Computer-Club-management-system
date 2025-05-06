@@ -17,6 +17,10 @@ ComputerClub Parser::parser(string &filename) {
 
        while (getline(input_file, line)) {
 
+            if (line.empty()) {
+                continue;
+            }
+
             Parser::valid_line(line, counter_line);
             if (counter_line == 1) {
                 table_count = stoi(line);
@@ -76,7 +80,7 @@ bool Parser::is_positive_number(const string &line) {
 
 
 bool Parser::is_valid_time_interval(const string &line) {
-    return regex_match(line, regex("^[0-9][0-9]:[0-9][0-9] [0-9][0-9]:[0-9][0-9]$"));
+    return regex_match(line, regex("^[0-2][0-9]:[0-9][0-9] [0-2][0-9]:[0-9][0-9]$"));
 }
 
 pair<int, int> Parser::parse_time(const string &time) {
@@ -92,7 +96,7 @@ Event Parser::parse_event(const string &line, int table_count) {
    string time, id, name, id_table;
    ss >> time >> id >> name >> id_table;
 
-   string expr_time = "^[0-9][0-9]:[0-9][0-9]";
+   string expr_time = "^[0-2][0-9]:[0-9][0-9]";
    string expr_id = "[1-4]";
    string expr_name = "[a-z0-9_-]+";
 

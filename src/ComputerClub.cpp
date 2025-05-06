@@ -42,26 +42,24 @@ void ComputerClub::leave_last_client() {
 
     vector<string> remaining_client;
 
-    for (auto &client : this->clients_at_table) {
-        remaining_client.push_back(client.first);
-        int table_id = clients_at_table[client.first];
-        Table &occupied_now = tables[table_id];
+    for (string client : this->clients_in_club) {
+        remaining_client.push_back(client);
 
-        // Устанавливаем время окончания и вычисляем выручку
-        occupied_now.set_end_time(this->close_time);
-        occupied_now.set_occupied_time();
+        if (clients_at_table.find(client) != clients_at_table.end()) {
+            int table_id = clients_at_table[client];
+            Table &occupied_now = tables[table_id];
 
-        occupied_now.set_revenue(this->hour_cost);
+            // Устанавливаем время окончания и вычисляем выручку
+            occupied_now.set_end_time(this->close_time);
+            occupied_now.set_occupied_time();
 
-        // Освобождаем стол
-        occupied_now.set_occupied(false);
-        occupied_now.set_start_time(Time(0, 0));
-        occupied_now.set_end_time(Time(0, 0));
-    }
+            occupied_now.set_revenue(this->hour_cost);
 
-    while (!this->waiting_queue.empty()) {
-        remaining_client.push_back(this->waiting_queue.front());
-        this->waiting_queue.pop();
+            // Освобождаем стол
+            occupied_now.set_occupied(false);
+            occupied_now.set_start_time(Time(0, 0));
+            occupied_now.set_end_time(Time(0, 0));
+        }
     }
 
     sort(remaining_client.begin(), remaining_client.end());
